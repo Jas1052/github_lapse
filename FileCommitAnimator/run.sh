@@ -1,0 +1,37 @@
+# https://stackoverflow.com/questions/19950620/how-to-hide-password-in-command-line-with-and-get-the-value-into-bat-file
+
+echo "You need a Github account to access repositories."
+echo ""
+prompt="Enter Github Email: "
+while IFS= read -p "$prompt" -r -s -n 1 char 
+do
+if [[ $char == $'\0' ]];     then
+    break
+fi
+if [[ $char == $'\177' ]];  then
+    prompt=$'\b \b'
+    password="${username%?}"
+else
+    prompt="$char"
+    username+="$char"
+fi
+done
+echo " "
+
+prompt="Enter Password: "
+while IFS= read -p "$prompt" -r -s -n 1 char 
+do
+if [[ $char == $'\0' ]];     then
+    break
+fi
+if [[ $char == $'\177' ]];  then
+    prompt=$'\b \b'
+    password="${password%?}"
+else
+    prompt='*'
+    password+="$char"
+fi
+done
+echo " "
+echo " "
+php create.php "$username" "$password"
