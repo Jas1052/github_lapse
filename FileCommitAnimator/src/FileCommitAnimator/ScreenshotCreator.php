@@ -2,15 +2,6 @@
 
 use JonnyW\PhantomJs\Client;
 
-/**
- * Creates screenshots of content at URL.
- * 
- * @version 1.0
- * @link https://github.com/KareemG/FileCommitAnimator
- * @author Kareem Golaub <kareemag@live.com>
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @copyright Kareem Golaub
- */
 class ScreenshotCreator {
     
     function __construct($binPath) {
