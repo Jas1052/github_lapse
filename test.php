@@ -1,10 +1,7 @@
 <?php
-function display()
-{
-    echo "hello ".$_POST["nameInput"];
-}
-if(isset($_POST['submit']))
-{
-   display();
+if(isset($_POST['submit'])){
+    if(empty($_POST['somevar'])){
+        $error = "Somevar was empty!";
+    }
 }
 ?>

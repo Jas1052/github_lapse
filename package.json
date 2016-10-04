@@ -1,8 +1,8 @@
 {
-  "name": "freelancer",
-  "title": "Freelancer",
+  "name": "github_lapse",
+  "title": "github_lapse",
   "version": "3.3.7+1",
-  "homepage": "http://startbootstrap.com/template-overviews/freelancer",
+  "homepage": "",
   "author": "Start Bootstrap",
   "license": {
     "type": "MIT",
@@ -22,6 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BlackrockDigital/startbootstrap-freelancer.git"
+    "url": "https://github.com/Jas1052/github_lapse"
+  },
+  "dependencies": {
+    "mongoose": "^4.6.1",
+    "nodemon": "^1.10.2"
   }
 }
