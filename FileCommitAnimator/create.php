@@ -15,17 +15,13 @@ function readline($prompt = null){
     $line = rtrim(fgets($fp, 1024));
     return $line;
 }
-/*
-if (count($argv) != 3) {
-    exit("Invalid arguments. ");
-}
-*/
+
 $credentials = base64_encode("JasBOT" . ":" . "jasbotneverforgets");
 
 echo "--File Details--\n";
-$name = "jtoy"; //readline("Repository Owner Username: ");
-$repo = "awesome-tensorflow"; //readline("Repository Name: ");
-$filePath = "README.md";//readline("File Path: ");
+$name = "Jas1052"; //readline("Repository Owner Username: ");
+$repo = "AI"; //readline("Repository Name: ");
+$filePath = "eightpuzzle.py";//readline("File Path: ");
 echo "\n";
 
 echo "--Gif Configuration--\n";
@@ -93,5 +89,5 @@ if (!file_exists('gifs\\')) {
     mkdir('gifs');
 }
 
-$anim->save("./gifs/" . date("Y-m-d h-i-sa") . ".gif");
-echo "gifs/" . date("Y-m-d h-i-sa") . ".gif " . "created. \n";
+$anim->save("./gifs/" . $filePath . "_" . date("h-i-s") . ".gif");
+echo "./gifs/" . $filePath . "_" . date("h-i-s") . ".gif" . " created. \n";

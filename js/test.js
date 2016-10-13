@@ -1,3 +1,0 @@
-function greetings(){
-    alert("greetings");
-}
