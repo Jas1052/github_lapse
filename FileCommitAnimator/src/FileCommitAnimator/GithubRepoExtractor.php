@@ -8,11 +8,6 @@ class GithubRepoExtractor {
 
     // stream context options
     private $opts;
-
-    /**
-     * @param string $ownerName Username of repository's owner.
-     * @param string $repoName Name of repository.
-     */
     function __construct($ownerName, $repoName, $credentials) {
         $this->ownerName = $ownerName;
         $this->repoName = $repoName;
@@ -25,12 +20,7 @@ class GithubRepoExtractor {
                           )
                       );
     }
-    
-    /**
-     * Returns 'sha' references of commits, where first entry is the earliest commit.
-     *
-     * @return string[]
-     */
+
     function getCommits() {
         $commitsUrl = $this->apiUrl . "/repos/" . $this->ownerName . "/" . $this->repoName . "/commits";
         $context = stream_context_create($this->opts);
@@ -86,13 +76,7 @@ class GithubRepoExtractor {
         $commitShas = array_reverse(array_map(function($o) { return $o->sha; }, $commits));
         return $commitShas;
     }
-    
-    /**
-     * Gets contents at file at specified commit (defaults to current commit if 
-     * unspecified).
-     *
-     * @return string
-     */
+
     function getFileAtCommit($fileName, $commit=null) {
         $fileUrl = $this->apiUrl . '/repos/' . $this->ownerName . '/' . $this->repoName . 
                    '/contents/' . $fileName;

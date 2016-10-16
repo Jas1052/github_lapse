@@ -42,10 +42,10 @@ try {
 }
 echo "done. \n";
 
-if (!file_exists('images\\')) {
-    mkdir('images');
+if (!file_exists('commits\\')) {
+    mkdir('commits');
 } else {
-    array_map('unlink', glob("images\*") ?: []);
+    array_map('unlink', glob("commits\*") ?: []);
 }
 
 $frames = array();
@@ -54,20 +54,20 @@ $counter = 1;
 $numOfCommits = count($commits);
 
 foreach ($commits as $commit) {
-    $htmlFile = fopen("images\\frame" . $counter . ".html", "w") or exit("Unable to write file: images\\frame-" . $counter . ".html");
+    $htmlFile = fopen("commits\\frame" . $counter . ".html", "w") or exit("Unable to write file: commits\\frame-" . $counter . ".html");
     $content = "<!DOCTYPE html><html><body style='width:100%;height:100%;background-color:white;'>" .
                 "<div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>" .
                 $counter . "</div><div style='display:flex;align-items:center;justify-content:center;'><pre>";
-    
+
     try {
         $content .= $extractor->getFileAtCommit($filePath, $commit);
     } catch (Exception $e) { }
-    
+
     $content .= "</pre></div></body></html>";
     fwrite($htmlFile, $content);
 
-    $htmlPath = "file:///" .  str_replace('\\', '/', dirname(__FILE__)) . "/images/frame" . $counter . ".html";
-    $imgPath = "./images/frame". $counter . ".png";
+    $htmlPath = "file:///" .  str_replace('\\', '/', dirname(__FILE__)) . "/commits/frame" . $counter . ".html";
+    $imgPath = "./commits/frame". $counter . ".png";
 
     $frames[$counter-1] = $imgPath;
     $durations[$counter-1] = 100/$frameRate;
