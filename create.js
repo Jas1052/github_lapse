@@ -4,6 +4,5 @@ var cmd = 'php FileCommitAnimator/create.php';
 console.log("Started");
 exec(cmd, function (error, stdout, stderr) {
     // command output is in stdout
-    console.log(stdout);
+    console.log(stdout)
 });
-
