@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>5</div><div style='display:flex;align-items:center;justify-content:center;'><pre>package com.example.a2017tlai.wheelsharealpha;
+<!DOCTYPE html><html><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>8</div><div style='display:flex;align-items:center;justify-content:center;'><pre>package com.example.a2017tlai.wheelsharealpha;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -172,23 +172,29 @@ public class RequestActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
             View rootView = inflater.inflate(R.layout.fragment_request, container, false);
-            recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-            recyclerView.setHasFixedSize(true);
 
-            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(llm);
-            recyclerView.setHasFixedSize(true);
+            if(getArguments().getInt(ARG_SECTION_NUMBER) == 1){
 
-            initializeData();
-            initializeAdapter();
+                recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                recyclerView.setHasFixedSize(true);
+
+                LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(llm);
+                recyclerView.setHasFixedSize(true);
+
+                initializeData();
+                initializeAdapter();
+
+            }
 
             return rootView;
         }
 
         private void initializeData(){
             persons = new ArrayList<>();
-            persons.add(new Person("Emma Wilson", "23 years old", R.drawable.ic_menu_gallery));
+            persons.add(new Person("Jackson Wilcox", "1.3 Miles Away", R.drawable.ic_menu_gallery));
             persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.ic_menu_camera));
             persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
             persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
@@ -239,9 +245,9 @@ public class RequestActivity extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Available Wheels";
                 case 1:
-                    return "SECTION 2";
+                    return "Wheel Requests";
 //                case 2:
 //                    return "SECTION 3";
             }

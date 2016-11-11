@@ -1,114 +1,252 @@
-<!DOCTYPE html><html><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>3</div><div style='display:flex;align-items:center;justify-content:center;'><pre>import copy
-from queue import *
+<!DOCTYPE html><html><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>3</div><div style='display:flex;align-items:center;justify-content:center;'><pre>package com.example.a2017tlai.wheelsharealpha;
 
-class node:
-    def __init__(self, state, depth):
-        self.state = state #2D array
-        self.depth = depth
-        #self.parent = parent
-        self.children = []
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-# secondState is what nodeState is compared to
-# returns false if they aren't identical, returns true otherwise
+import java.util.ArrayList;
+import java.util.List;
 
-    def getState(self):
-        return self.state
+public class RequestActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    def getDepth(self):
-        return self.depth
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    def getChildren(self):
-        return self.children
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_request);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    def compare(self, secondState):
-        for y in range(0, 3):
-            for x in range(0, 3):
-                if self.state[y][x] != secondState[y][x]:
-                    return False
-        return True
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-    #checks if puzzle is solved
-    def checkGoal(self):
-        goalState = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-        return self.compare(goalState)
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-    def findZero(self):
-        for y in range(0, 3):
-            for x in range(0, 3):
-                if self.state[y][x] == 0:
-                    return [y, x]
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-    def createChildren(self):
-        zeroPos = self.findZero()  # y, x
-        y = zeroPos[0]
-        x = zeroPos[1]
-        # moving 0 top; moving top piece into empty
-        if y-1 > -1:
-            temp = copy.deepcopy(self.state)    #copy state
-            temp[y][x] = copy.deepcopy(temp[y-1][x])
-            temp[y-1][x] = 0
-            tempPuzzle = node(temp, self.depth + 1)
-            self.children.append(tempPuzzle)
-            # self.printState(temp)
-         # moving 0 down; moving down piece into empty
-        if y+1 < 3:
-            temp = copy.deepcopy(self.state)
-            temp[y][x] = copy.deepcopy(temp[y+1][x])
-            temp[y+1][x] = 0
-            tempPuzzle = node(temp, self.depth + 1)
-            self.children.append(tempPuzzle)
-            # self.printState(temp)
-        # moving 0 left; moving left piece into empty
-        if x-1 > -1:
-            temp = copy.deepcopy(self.state)
-            temp[y][x] = copy.deepcopy(temp[y][x-1])
-            temp[y][x-1] = 0
-            tempPuzzle = node(temp, self.depth + 1)
-            self.children.append(tempPuzzle)
-            # self.printState(temp)
-        # moving 0 right; moving right piece into empty
-        if x+1 < 3:
-            temp = copy.deepcopy(self.state)
-            temp[y][x] = copy.deepcopy(temp[y][x+1])
-            temp[y][x+1] = 0
-            tempPuzzle = node(temp, self.depth + 1)
-            self.children.append(tempPuzzle)
-            # self.printState(temp)
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-    def printState(self):
-        print(self.state[0])
-        print(self.state[1])
-        print(self.state[2])
-        print("\n")
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(mViewPager);
+        
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
-fringe = Queue()
-blocked = []
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-def solve(tree):   # tree is a node
-    fringe.put(tree)
-    while fringe.empty() is not True:
-        nodeTemp = fringe.get()
-        matrixTemp = nodeTemp.getState()
-        if nodeTemp.checkGoal() is True:
-            print(matrixTemp)
-            exit()
-        nodeTemp.createChildren()
-        for i in range(0, len(nodeTemp.getChildren())):
-            newNode = nodeTemp.getChildren()[i]  # newNode is child
-            if newNode not in fringe.queue and newNode not in blocked:
-                # newNode.printState()
-                blocked.append(newNode)
-                fringe.put(newNode)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.request, menu);
+        return true;
+    }
 
-# main
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-# making starting matrix
-# start = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-start = [[0, 4, 3],
-         [7, 1, 6],
-         [5, 2, 8]]
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-tree = node(start, 1)
-solve(tree)
+        return super.onOptionsItemSelected(item);
+    }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PageFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        private List<Person> persons;
+        private RecyclerView recyclerView;
+
+        public PageFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PageFragment newInstance(int sectionNumber) {
+            PageFragment fragment = new PageFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_request, container, false);
+            recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+            recyclerView.setHasFixedSize(true);
+
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setHasFixedSize(true);
+
+            initializeData();
+            initializeAdapter();
+
+            return rootView;
+        }
+
+        private void initializeData(){
+            persons = new ArrayList<>();
+            persons.add(new Person("Emma Wilson", "23 years old", R.drawable.ic_menu_gallery));
+            persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.ic_menu_camera));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+            persons.add(new Person("Lillie Watts", "35 years old", R.drawable.ic_menu_manage));
+        }
+
+        private void initializeAdapter(){
+            RVAdapter adapter = new RVAdapter(persons);
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PageFragment (defined as a static inner class below).
+            return PageFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "SECTION 1";
+                case 1:
+                    return "SECTION 2";
+//                case 2:
+//                    return "SECTION 3";
+            }
+            return null;
+        }
+    }
+}
 </pre></div></body></html>
