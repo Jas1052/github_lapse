@@ -1,0 +1,5 @@
+Removed nodejs because I determined it would be simply be inconvenient and it would be better to simply work in PHP
+Added a material template for front end
+Looked into MongoDB and SQL to determine and finalize backend image and storage of information
+Setup Github Lapse on school computer and by cloning my repository on GitHub
+Pushed to GitHub
