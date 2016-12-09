@@ -295,20 +295,3 @@
 
     </body>
 </html>
-
-<script>
-    var scriptString = 'THIS IS MY STRING';
-    $('#generator').click(function(){
-        $.ajax({
-          method: 'get',
-          url: '../lapse/create.php',
-          data: {
-            'myString': scriptString,
-            'ajax': true
-          },
-          success: function(data) {
-            $('#data').text(data);
-          }
-        });
-    });
-</script>
