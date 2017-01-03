@@ -398,3 +398,30 @@
 
 Please note: Some of the links may not be as relevant as when they were originally written. The Ember.js ecosystem is under active development and things a liable to change. If you feel something should be removed just let me know.
 </pre></div></body></html>
+<script>
+                var totalFrames = 6
+                document.onkeydown = checkKey;
+                function checkKey(e) {
+                    e = e || window.event;
+                  if (e.keyCode == '37') {
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count--;
+                       document.location.href = 'frame' + count + '.html';
+                    }
+                    else if (e.keyCode == '39') {
+                       // right arrow
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count++;
+                       document.location.href = 'frame' + count + '.html';
+                  }
+
+                }
+                </script>

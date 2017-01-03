@@ -3,22 +3,30 @@
 
 A curated list of useful EmberJS links.
 </pre></div></body></html>
-
 <script>
-document.onkeydown = checkKey;
+                var totalFrames = 0
+                document.onkeydown = checkKey;
+                function checkKey(e) {
+                    e = e || window.event;
+                  if (e.keyCode == '37') {
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count--;
+                       document.location.href = 'frame' + count + '.html';
+                    }
+                    else if (e.keyCode == '39') {
+                       // right arrow
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count++;
+                       document.location.href = 'frame' + count + '.html';
+                  }
 
-function checkKey(e) {
-    e = e || window.event;
-	if (e.keyCode == '37') {
-       // left arrow
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-       var fileName = location.href.split("/").slice(-1); 
-       var count = parseInt(fileName[0].substring(5, 6));
-       count++;
-       document.location.href = 'frame' + count + '.html';
-	}
-
-}
-</script>
+                }
+                </script>

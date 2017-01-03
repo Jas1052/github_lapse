@@ -65,7 +65,33 @@ foreach ($commits as $commit) {
         $content .= $extractor->getFileAtCommit($filePath, $commit);
     } catch (Exception $e) { }
 
-    $content .= "</pre></div></body></html>";
+    $content .= "</pre></div></body></html>\n" . 
+                "<script>
+                document.onkeydown = checkKey;
+                function checkKey(e) {
+                    e = e || window.event;
+                  if (e.keyCode == '37') {
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count--;
+                       document.location.href = 'frame' + count + '.html';
+                    }
+                    else if (e.keyCode == '39') {
+                       // right arrow
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count++;
+                       document.location.href = 'frame' + count + '.html';
+                  }
+
+                }
+                </script>";
     fwrite($htmlFile, $content);
 
     $htmlPath = "file:///" .  str_replace('\\', '/', dirname(__FILE__)) . "/commits/frame" . $counter . ".html";
