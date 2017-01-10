@@ -502,30 +502,3 @@ Please note: Some of the links may not be as relevant as when they were original
   this work.
 </p>
 </pre></div></body></html>
-<script>
-                var totalFrames = 25
-                document.onkeydown = checkKey;
-                function checkKey(e) {
-                    e = e || window.event;
-                  if (e.keyCode == '37') {
-                       var fileName = location.href.split('/').slice(-1); 
-                       fileName = fileName.toString();
-                       var dotIndex = fileName.indexOf('.');
-                       fileCount = fileName.substring(5, dotIndex);
-                       var count = parseInt(fileCount);
-                       count--;
-                       document.location.href = 'frame' + count + '.html';
-                    }
-                    else if (e.keyCode == '39') {
-                       // right arrow
-                       var fileName = location.href.split('/').slice(-1); 
-                       fileName = fileName.toString();
-                       var dotIndex = fileName.indexOf('.');
-                       fileCount = fileName.substring(5, dotIndex);
-                       var count = parseInt(fileCount);
-                       count++;
-                       document.location.href = 'frame' + count + '.html';
-                  }
-
-                }
-                </script>
