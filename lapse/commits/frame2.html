@@ -72,3 +72,29 @@
 > Useful resources for data visualization and working with D3.js
 
 * [Visualizing Data with Ember Components & D3.js](http://embervis.affin.io/slides/)</pre></div></body></html>
+<script>
+                document.onkeydown = checkKey;
+                function checkKey(e) {
+                    e = e || window.event;
+                  if (e.keyCode == '37') {
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count--;
+                       document.location.href = 'frame' + count + '.html';
+                    }
+                    else if (e.keyCode == '39') {
+                       // right arrow
+                       var fileName = location.href.split('/').slice(-1); 
+                       fileName = fileName.toString();
+                       var dotIndex = fileName.indexOf('.');
+                       fileCount = fileName.substring(5, dotIndex);
+                       var count = parseInt(fileCount);
+                       count++;
+                       document.location.href = 'frame' + count + '.html';
+                  }
+
+                }
+                </script>
