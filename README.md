@@ -1,10 +1,10 @@
 ## Git Lapse
 
-Git Lapse helps developers utilize the effects of commits in version control. As a specialized tool, Git Lapse shows progression of code through multiple commits instead of Github's own side-by-side. This is targeted toward focused visualization of version control on a specific file. Using LAMP (Linux, Apache, mySQL, and PHP), this is a full-stack web application that generates unique webpages for each commit and enables the user to see line-by-line changes over numerous commits. Git Lapse also generates a GIF for easy visualization. 
+Git Lapse helps developers utilize the effects of commits in version control. As a specialized tool, Git Lapse shows progression of code through multiple commits instead of Github's own side-by-side. This is targeted toward focused visualization of version control on a specific file. This project relies on LAMP (Linux, Apache, mySQL, and PHP) to generate unique webpages for each commit and enables the user to see line-by-line changes over numerous commits. Git Lapse also generates a GIF for easy visualization. 
 
 ## Motivation
 
-This was made in the Web and Mobile Development Research Lab at Thomas Jefferson High School for Science and Technology as a senior research project. I created this because I was annoyed by Github's solution to see multiple versions of a file and wanted to offer another alternative. Although they offer a "difference between consecutive commit" solution, seeing multiple commits is difficult. Furthermore, if using the "view repository at this commit" option, it still limits the ability to see changes between numerous commits. It's also difficult to find a specific version of a file with various contributors, branches, and commits.
+This was made in the Web and Mobile Development Research Lab at Thomas Jefferson High School for Science and Technology as a senior research project. I created this because I was annoyed by Github's solution to see multiple versions of a file and wanted to offer another alternative. Although they offer a "difference between consecutive commit" and "view repository at this commit," seeing multiple commits remains impossible. It's also difficult to find a specific version of a file with various contributors, branches, and commits.Git Lapse resolves this as a one stop solution to see all commit changes and its individual effects on files.
 
 ## Installation
 
