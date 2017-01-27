@@ -56,7 +56,6 @@ $counter = 1;
 $numOfCommits = count($commits);
 
 foreach ($commits as $commit) {
-    $htmlFile = fopen("commits\\frame" . $counter . ".html", "w") or exit("Unable to write file: commits\\frame-" . $counter . ".html");
     $content = "<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'>" .
                 "<div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>" .
                 $counter . "</div><div style='align-items:center;justify-content:center;'><pre>";
@@ -66,7 +65,7 @@ foreach ($commits as $commit) {
     } catch (Exception $e) { }
 
     $content .= 
-    "</pre></div></body></html>\n" . 
+    "</pre></div></body></html>\n<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>\n" . 
     "<script>
     document.onkeydown = checkKey;
     function checkKey(e) {
@@ -90,11 +89,17 @@ foreach ($commits as $commit) {
            fileCount = fileName.substring(5, dotIndex);
            var count = parseInt(fileCount);
            count++;
-           document.location.href = 'frame' + count + '.html';
+          $.get('frame'+count+'.html')
+            .done(function() { 
+              document.location.href = 'frame' + count + '.html';
+            }).fail(function() { 
+                  // not exists code
+            })
+          }
       }
 
-    }
     </script>";
+    $htmlFile = fopen("commits\\frame" . $counter . ".html", "w") or exit("Unable to write file: commits\\frame-" . $counter . ".html");
     fwrite($htmlFile, $content);
 
     $htmlPath = "file:///" .  str_replace('\\', '/', dirname(__FILE__)) . "/commits/frame" . $counter . ".html";

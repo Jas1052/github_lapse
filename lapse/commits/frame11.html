@@ -451,6 +451,7 @@
 
 Please note: Some of the links may not be as relevant as when they were originally written. The Ember.js ecosystem is under active development and things a liable to change. If you feel something should be removed just let me know.
 </pre></div></body></html>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script>
     document.onkeydown = checkKey;
     function checkKey(e) {
@@ -474,8 +475,13 @@ Please note: Some of the links may not be as relevant as when they were original
            fileCount = fileName.substring(5, dotIndex);
            var count = parseInt(fileCount);
            count++;
-           document.location.href = 'frame' + count + '.html';
+          $.get('frame'+count+'.html')
+            .done(function() { 
+              document.location.href = 'frame' + count + '.html';
+            }).fail(function() { 
+                  // not exists code
+            })
+          }
       }
 
-    }
     </script>
