@@ -11,7 +11,7 @@ This was made in the Web and Mobile Development Research Lab at Thomas Jefferson
 ###Prerequisites
 This project requires LAMP and Composer to be installed.
 
-###Windows Linux
+###Windows / Linux
 1. Make sure you have LAMP installed through [XAMPP](https://www.apachefriends.org/index.html)
 2. Make sure you have [Composer](https://getcomposer.org/) installed.
 2. Download this repository using either option
