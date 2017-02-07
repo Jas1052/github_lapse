@@ -1,77 +1,197 @@
-<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>2</div><div style='align-items:center;justify-content:center;'><pre># Ember.js Links
+<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>2</div><div style='align-items:center;justify-content:center;'><pre># Acai
 
-> A curated list of EmberJS links. I'll do my best to keep it up to date but please feel free to contribute if you have any links you feel are worth including here.
+Disclaimer: This is not an official Google product.
 
-- [Ember.js Links](#emberjs-links)
-	- [Basics](#basics)
-	- [Ember Object](#ember-object)
-	- [Templates](#templates)
-	- [Routing](#routing)
-	- [Controllers](#controllers)
-	- [Models](#models)
-	- [Ember Data](#ember-data)
-	- [Components](#components)
-	- [Authentication](#authentication)
-	- [Data Visualization & D3](#data-visualisation-d3)
+Acai makes it easy to write functional tests of your application
+with JUnit4 and Guice.
 
-## Basics
-> Useful resources for getting started with Ember.js
+Acai makes it simple to:
+ - Inject the helper classes you need into tests
+ - Start any services needed by your tests
+ - Run between-test cleanup of these services
+ - Start up multiple services for testing in the right order
 
-* [Ember.js Official Documentation - Getting Started](http://emberjs.com/guides/getting-started/)
-* [Codeschool - Warming Up With Ember.js](https://www.codeschool.com/courses/warming-up-with-ember-js)
+Acai is designed for large functional tests of your application. For
+example it can help with writing tests which start your backend and frontend
+server in a self-contained mode with their dependencies faked out and then
+validates some key user scenarios with Webdriver to give you confidence your
+complete system works correctly. It can also be useful for tests which validate
+the integration of a small set of components. Note however that for smaller
+unit-tests we generally recommend you create the class under test manually
+rather than using Acai.
 
-## Ember Object
-> Useful resources for the Ember object model
+## Using Acai to inject a test
+The simplest test using Acai doesn't register any TestingService bindings
+at all, it just uses Acai to inject a test with a module:
 
-* [Ember.js Official Documentation - The Object Model](http://emberjs.com/guides/object-model/classes-and-instances/)
-* [Learning to Love Ember’s Dependency Injection](http://spin.atomicobject.com/2014/09/04/ember-dependency-injection/)
+```Java
+@RunWith(JUnit4.class)
+public class SimpleTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
 
-## Templates
+  @Inject private MyClass foo;
 
-* [Ember.js Official Documentation - Templates](http://emberjs.com/guides/templates/the-application-template/)
-* [Hidden features of the #each helper](http://ember.guru/2014/hidden-features-of-the-each-aka-loopedy-loop-helper)
+  @Test
+  public void checkSomethingWorks() {
+    // Use the injected value of foo here
+  }
 
-## Routing
-> Useful resources for the Ember object model
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      bind(MyClass.class).to(MyClassImpl.class);
+    }
+  }
+}
+```
 
-* [Ember.js Official Documentation - Routing](http://emberjs.com/guides/routing/)
-* [Diagonal Routes (tool to help you define your routes)](http://www.alexspeller.com/ember-diagonal/)
+## Using Acai to start services
+The real power of Acai comes when your production server is configured
+with Guice and you create an alternate test module which configures your server
+with heavyweight dependencies like databases replaced with local in-memory
+implementations. You could then start this server once for all tests in the
+suite (to avoid waiting for it to start between each test) and wipe the
+database between tests (to cheaply isolate test-cases from one-another).
 
-## Controllers
-> Useful resources for controllers
+The following example shows how this pattern would be used in tests:
 
-* [Ember.js Official Documentation - Controllers](http://emberjs.com/guides/controllers/)
-* [Sorting and Filtering with Ember.js](http://blog.crowdint.com/2014/07/08/simple-collection-s-sorting-and-filtering-with-ember-js.html)
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFunctionalTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
 
-## Models
-> Useful resources for models, see Ember Data section for specifics of working with Ember Data
+  @Inject private MyServerClient serverClient;
 
-* [Ember.js Official Documentation - Models](http://emberjs.com/guides/models/)
+  @Test
+  public void checkSomethingWorks() {
+    // Call the running server and test some behaviour here.
+    // Any state will be cleared by MyFakeDatabaseWiper after each
+    // test case.
+  }
 
-## Ember Data
-> Useful resources for Ember Data
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of backends.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
 
-* [Ember.js Official Documentation - Models](http://emberjs.com/guides/models/)
-* [Ember Data: Polymorphic Associations](http://lukegalea.github.io/ember_data_polymorphic_presentation/#/)
-* [Ember Data Model Maker (tool to help you define your models)](http://andycrum.github.io/ember-data-model-maker/)
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyFakeDatabaseWiper.class);
+        }
+      });
+    }
+  }
 
-## Components
-> Useful resources for components
+  private static class MyServerRunner implements TestingService {
+    @Inject private MyServer myServer;
 
-* [Ember.js Official Documentation - Components](http://emberjs.com/guides/components/)
-* [A Graceful Image Loading Component](http://ember.zone/a-graceful-image-loading-component/)
-* [Getting Ember components to respond to actions](http://www.samselikoff.com/blog/2014/05/16/getting-ember-components-to-respond-to-actions/)
+    @BeforeSuite public void startServer() {
+      myServer.start().awaitStarted();
+    }
+  }
 
-## Authentication
-> Useful resources for authentication and authorization
+  private static class MyFakeDatabaseWiper implements TestingService {
+    @Inject private MyFakeDatabse myFakeDatabase;
 
-* [Authentication for Single Page Apps](http://madhatted.com/2014/6/17/authentication-for-single-page-apps)
-* [Torii (an authorization service library for your Ember.js application)](http://vestorly.github.io/torii/)
+    @AfterTest public void wipeDatabase() {
+      myFakeDatabase.wipe();
+    }
+  }
+}
+```
 
-## Data Visualization & D3
-> Useful resources for data visualization and working with D3.js
+Note that when a module is passed to Acai in a rule any @BeforeSuite
+methods are only executed once per suite even if the same module is used in
+multiple Acai rules in multiple different test classes within that suite.
+This allows tests of the server to be structured into test classes according to
+the functionality being tested.
 
-* [Visualizing Data with Ember Components & D3.js](http://embervis.affin.io/slides/)</pre></div></body></html>
+## Services which depend upon each other
+If the services you need to start for tests must be started in a specific order
+you can express this using the `@DependsOn` annotation.
+
+For example:
+
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFrontendWebdriverTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
+
+  @Inject private SomeFrontendFeaturePageObject featurePage;
+
+  @Test
+  public void checkSomethingWorks() {
+    // Test the frontend client using the webdriver page
+    // object here.
+  }
+
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of servers and
+      // a test module configuring a webdriver client.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
+      install(WebDriverModule());
+
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyBackendRunner.class);
+        }
+      });
+    }
+  }
+
+  @DependsOn(MyBackendRunner.class)
+  private static class MyFrontendRunner implements TestingService {
+    @Inject private MyFrontendServer myFrontendServer;
+
+    @BeforeSuite public void startServer() {
+      myFrontendServer.start().awaitStarted();
+    }
+  }
+
+  private static class MyBackendRunner implements TestingService {
+    @Inject private MyBackendServer myBackendServer;
+
+    @BeforeSuite public void startServer() {
+      myBackendServer.start().awaitStarted();
+    }
+  }
+}
+```
+
+In the above example `MyFrontendRunner` is annotated
+`@DependsOn(MyBackendRunner.class)` which will cause Acai to start the
+backend server before starting the frontend.
+
+## API
+As shown in the above examples Acai has a very small API surface.
+Firstly, and most importantly, there is the `Acai` rule class itself
+which is used as a JUnit4 `@Rule` and is passed a module class to be used to
+configure the test.
+
+The module class passed to the `Acai` constructor may optionally use
+`TestingServiceModule` to bind one or more `TestingService` implementations.
+
+The `TestingService` interface is purely a marker to allow Acai to know
+which classes provide testing services. To actually do anything implementations
+of this interface should add zero argument methods annotated with one of
+`@BeforeSuite`, `@BeforeTest` or `@AfterTest`. These methods will be run before
+the suite, before each test or after each test respectively. You may add as
+many methods annotated with these annotations as you wish to a
+`TestingService`; Acai will find and run them all when appropriate.
+
+Finally a `TestingService` implementation can be annotated `@DependsOn` to
+signal its `@BeforeSuite` and `@BeforeTest` methods need to be run after
+those of another `TestingService`. This provides a simple declarative mechanism
+to order service startup in tests.
+
+Refer to the examples above to see the API in action.
+</pre></div></body></html>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script>
     document.onkeydown = checkKey;

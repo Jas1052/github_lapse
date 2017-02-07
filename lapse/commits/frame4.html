@@ -1,218 +1,196 @@
-<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>4</div><div style='align-items:center;justify-content:center;'><pre># Ember.js Links
+<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>4</div><div style='align-items:center;justify-content:center;'><pre># Acai
 
-> A curated list of EmberJS resources. I'll do my best to keep it up to date but please feel free to contribute if you have any links you feel are worth including here.
+Disclaimer: This is not an official Google product.
 
-- [Ember.js Links](#emberjs-links)
-	- [Basics](#basics)
-	- [Ember Object](#ember-object)
-	- [Templates](#templates)
-	- [Routing](#routing)
-	- [Controllers](#controllers)
-	- [Models](#models)
-	- [Ember Data](#ember-data)
-	- [Components](#components)
-	- [Testing](#testing)
-	- [Working with 3rd party libraries](#working-with-3rd-party-libraries)
-	- [Authentication](#authentication)
-	- [Data Visualization & D3](#data-visualisation--d3)
-	- [Working With Files](#working-with-files)
-	- [Debugging](#debuggin]
-	- [Build Tools](#build-tools)
-	- [Ember CLI](#ember-cli)
-	- [Backend Integration](#backend-integration)
-	- [Deployment](#deployment)
-	- [SEO](#seo--analytics)
-	- [Other sites for resources](#other-sites-for-resources)
-	- [Misc Ember Links](#misc-ember-links)
+Acai makes it easy to write functional tests of your application
+with JUnit4 and Guice.
 
-## Basics
-> Useful resources for getting started with Ember.js
+Acai makes it simple to:
+ - Inject the helper classes you need into tests
+ - Start any services needed by your tests
+ - Run between-test cleanup of these services
+ - Start up multiple services for testing in the right order
 
-* [Ember.js Official Documentation - Getting Started](http://emberjs.com/guides/getting-started/)
-* [Codeschool - Warming Up With Ember.js](https://www.codeschool.com/courses/warming-up-with-ember-js)
-* [Vic Ramon's Ember Tutorial](https://emberflare.com/entries/vic-ramon-s-ember-tutorial)
-* [Resources for Getting Started with Ember.js](http://spin.atomicobject.com/2013/09/15/ember-js-resources/)
-* [An In-Depth Introduction To Ember.js](http://www.smashingmagazine.com/2013/11/07/an-in-depth-introduction-to-ember-js/)
-* [Things I wish someone had told me when I was learning Ember.js](http://landongn.com/ember/things-i-wish-someone-had-told-me-when-i-was-learning-ember-js/)
+Acai is designed for large functional tests of your application. For
+example it can help with writing tests which start your backend and frontend
+server in a self-contained mode with their dependencies faked out and then
+validates some key user scenarios with Webdriver to give you confidence your
+complete system works correctly. It can also be useful for tests which validate
+the integration of a small set of components. Note however that for smaller
+unit-tests we generally recommend you create the class under test manually
+rather than using Acai.
 
-## Ember Object
-> Useful resources for the Ember object model
+## Using Acai to inject a test
+The simplest test using Acai doesn't register any TestingService bindings
+at all, it just uses Acai to inject a test with a module:
 
-* [Ember.js Official Documentation - The Object Model](http://emberjs.com/guides/object-model/classes-and-instances/)
-* [Computed Properties in Ember.Js](http://reefpoints.dockyard.com/2013/09/04/computed_properties_in_ember_js.html)
-* [Ember.js - Taming computed properties](http://ugisozols.com/blog/2013/10/17/emberjs-taming-computed-properties/)
-* [Practical Abstraction in Ember.js](http://spin.atomicobject.com/2013/12/02/emberjs-abstraction)
-* [Effortless Abstraction with Ember.js](http://spin.atomicobject.com/2013/04/14/effortless-abstraction-ember/)
-* [Dynamic Binding in Ember.js Using Observers](http://spin.atomicobject.com/2013/05/12/dynamic-ember-js-binding-observers/)
-* [Learning to Love Ember’s Dependency Injection](http://spin.atomicobject.com/2014/09/04/ember-dependency-injection/)
-* [Ember Application Initializers](http://ember.zone/ember-application-initializers/)
-* [Ember Object Self Troll](http://reefpoints.dockyard.com/2014/04/17/ember-object-self-troll.html)
-* [Ember Works Best When You Tell Instead Of Ask](http://ember.zone/ember-works-best-when-you-tell-instead-of-ask/)
-* [Beginning to understand the Ember.js Container](http://ember.zone/beginning-to-understand-the-ember-js-container/)
-* [Handling environment data with Ember.js](http://ember.zone/handling-environment-data-with-ember-js/)
-* [What the hell is Ember.K?](http://ember.zone/what-the-hell-is-ember-k/)
+```Java
+@RunWith(JUnit4.class)
+public class SimpleTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
 
-## Templates
+  @Inject private MyClass foo;
 
-* [Ember.js Official Documentation - Templates](http://emberjs.com/guides/templates/the-application-template/)
-* [Hidden features of the #each helper](http://ember.guru/2014/hidden-features-of-the-each-aka-loopedy-loop-helper)
+  @Test
+  public void checkSomethingWorks() {
+    // Use the injected value of foo here
+  }
 
-## Routing
-> Useful resources for the Ember object model
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      bind(MyClass.class).to(MyClassImpl.class);
+    }
+  }
+}
+```
 
-* [Ember.js Official Documentation - Routing](http://emberjs.com/guides/routing/)
-* [Diagonal Routes (tool to help you define your routes)](http://www.alexspeller.com/ember-diagonal/)
-* [Understanding nesting in Ember.js](http://ugisozols.com/blog/2013/11/05/understanding-nesting-in-emberjs/)
-* [Adding route specific body class tags in Ember](http://reefpoints.dockyard.com/ember/2013/03/27/body-class-tags-in-ember.html)
-* [Know your routes in Ember.js](http://ugisozols.com/blog/2014/02/25/know-your-routes-in-emberjs/)
+## Using Acai to start services
+The real power of Acai comes when your production server is configured
+with Guice and you create an alternate test module which configures your server
+with heavyweight dependencies like databases replaced with local in-memory
+implementations. You could then start this server once for all tests in the
+suite (to avoid waiting for it to start between each test) and wipe the
+database between tests (to cheaply isolate test-cases from one-another).
 
-## Controllers
-> Useful resources for controllers
+The following example shows how this pattern would be used in tests:
 
-* [Ember.js Official Documentation - Controllers](http://emberjs.com/guides/controllers/)
-* [Sorting and Filtering with Ember.js](http://blog.crowdint.com/2014/07/08/simple-collection-s-sorting-and-filtering-with-ember-js.html)
-* [Calling a controller action from a view via the needs API in Ember.js](http://www.kaspertidemann.com/calling-a-controller-action-from-a-view-via-the-needs-api-in-ember-js/)
-* [Routeless Ember.js Controllers](http://ember.zone/routeless-ember-js-controllers/)
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFunctionalTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
 
-## Models
-> Useful resources for models, see Ember Data section for specifics of working with Ember Data
+  @Inject private MyServerClient serverClient;
 
-* [Ember.js Official Documentation - Models](http://emberjs.com/guides/models/)
-* [Mimic Network Latency using FixtureAdapter](http://www.ember-tricks.com/#/tricks/How to mimic network latency with the fixture adapter during development)
+  @Test
+  public void checkSomethingWorks() {
+    // Call the running server and test some behaviour here.
+    // Any state will be cleared by MyFakeDatabaseWiper after each
+    // test case.
+  }
 
-## Ember Data
-> Useful resources for Ember Data
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of backends.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
 
-* [Ember.js Official Documentation - Models](http://emberjs.com/guides/models/)
-* [A Thorough Guide to Ember Data](https://emberflare.com/entries/a-thorough-guide-to-ember-data)
-* [Model Errors in EmberJS](https://marcqualie.com/2014/04/model-errors-in-emberjs)
-* [Changes Pending! Ember Data Dirty State Tracking](http://spin.atomicobject.com/2014/05/07/ember-data-dirty-state-tracking/)
-* [Ember Data: Polymorphic Associations](http://lukegalea.github.io/ember_data_polymorphic_presentation/#/)
-* [Ember Data Model Maker (tool to help you define your models)](http://andycrum.github.io/ember-data-model-maker/)
-* [A Simple Ember Data Route](http://reefpoints.dockyard.com/2014/03/03/a-simple-ember-data-route.html)
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyFakeDatabaseWiper.class);
+        }
+      });
+    }
+  }
 
-## Components
-> Useful resources for components
+  private static class MyServerRunner implements TestingService {
+    @Inject private MyServer myServer;
 
-* [Ember.js Official Documentation - Components](http://emberjs.com/guides/components/)
-* [Ember Components: A Deep Dive](http://code.tutsplus.com/tutorials/ember-components-a-deep-dive--net-35551)
-* [A Graceful Image Loading Component](http://ember.zone/a-graceful-image-loading-component/)
-* [Getting Ember components to respond to actions](http://www.samselikoff.com/blog/2014/05/16/getting-ember-components-to-respond-to-actions/)
-* [Sorting Displayed Data Using Components](http://www.kabisa.nl/sorting-displayed-data-in-ember-js/)
-* [Ember Table, Ember Widgets & Ember Charts by Addepar](http://addepar.github.io)
-* [The Confusion Around Ember Views and Components](http://ember.zone/the-confusion-around-ember-views-and-components/)
-* [Alert messages in Ember Apps](http://reefpoints.dockyard.com/2014/05/01/alert-messages-in-ember-apps.html)
-* [Breadcrumbs in Ember.js](http://spin.atomicobject.com/2014/07/26/ember-js-breadcrumbs/)
-* [Creating a Pagination Component with Ember.js and Foundation](http://spin.atomicobject.com/2014/06/27/pagination-emberjs-foundation/)
-* [“Subclassing” Ember Components](http://spin.atomicobject.com/2014/03/16/subclass-emberjs-components/)
+    @BeforeSuite public void startServer() {
+      myServer.start().awaitStarted();
+    }
+  }
 
-## Views
-> Useful resources for views
+  private static class MyFakeDatabaseWiper implements TestingService {
+    @Inject private MyFakeDatabse myFakeDatabase;
 
-* [Ember.js Official Documentation - Views](http://emberjs.com/guides/views/)
-* [Preserve scrolling position in Ember Apps](http://reefpoints.dockyard.com/2014/05/05/preserve-scroll-position-in-ember-apps.html)
+    @AfterTest public void wipeDatabase() {
+      myFakeDatabase.wipe();
+    }
+  }
+}
+```
 
-## Testing
-> Useful resources for testing
+Note that when a module is passed to Acai in a rule any @BeforeSuite
+methods are only executed once per suite even if the same module is used in
+multiple Acai rules in multiple different test classes within that suite.
+This allows tests of the server to be structured into test classes according to
+the functionality being tested.
 
-* [Ember.js Official Documentation - Testing](http://emberjs.com/guides/testing/)
-* [Testing Ember.js Applications](http://www.mattjmorrison.com/2014/04/02/ember-testing.html)
-* [What App.reset() does in Ember](https://emberflare.com/entries/what-app-reset-does-in-ember)
-* [Testing & Tooling in EmberJS](http://spin.atomicobject.com/2014/01/02/emberjs-testing-tooling/)
+## Services which depend upon each other
+If the services you need to start for tests must be started in a specific order
+you can express this using the `@DependsOn` annotation.
 
-## Working With 3rd party libraries
-> Useful resources for working with 3rd party libraries, including jQuery
+For example:
 
-* [Wrapping a jQuery plugin with Ember.js Views](http://blakewilliams.me/posts/5-wrap-jquery-plugin-with-ember-view)
-* [Ember JS - How to execute jQuery logic correctly after your View has been rendered](http://mavilein.github.io/javascript/2013/08/01/Ember-JS-After-Render-Event/)
-* [Ember.js Date Pickers – It’s Easy!](http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/)
-* [Ember Date Picker with Ember Data and Pikaday](http://dylanmarkow.com/blog/2014/03/27/ember-date-picker-with-ember-data-and-pikaday/)
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFrontendWebdriverTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
 
-## Authentication
-> Useful resources for authentication and authorization
+  @Inject private SomeFrontendFeaturePageObject featurePage;
 
-* [Authentication for Single Page Apps](http://madhatted.com/2014/6/17/authentication-for-single-page-apps)
-* [Ember.js Authentication - the right way (Javascript version)](http://webcloud.github.io/blog/2014/04/07/emberjs-authentication-the-right-way-javascript-version/)
-* [Torii (an authorization service library for your Ember.js application)](http://vestorly.github.io/torii/)
-* [Ember Simple Auth](http://ember-simple-auth.simplabs.com/)
-* [Ember Simple Auth Torii - extension that is compatible with Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii)
-* [Ember Simple Auth Token - extension that is compatible with token-based authentication](https://github.com/jpadilla/ember-cli-simple-auth-token)
-* [Ember.js and Rails Authentication Gotchas](http://blog.waymondo.com/2012-12-18-ember-dot-js-and-rails-authentication-gotchas/)
+  @Test
+  public void checkSomethingWorks() {
+    // Test the frontend client using the webdriver page
+    // object here.
+  }
 
-## Data Visualization & D3
-> Useful resources for data visualization and working with D3.js
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of servers and
+      // a test module configuring a webdriver client.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
+      install(WebDriverModule());
 
-* [Visualizing Data with Ember Components & D3.js](http://embervis.affin.io/slides/)
-* [Ember DC - Multi-Dimensional charting built to work natively with crossfilter rendered with d3.js](http://andrewreedy.github.io/ember-dc/)
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyBackendRunner.class);
+        }
+      });
+    }
+  }
 
-## Working With Files
-> Useful resources for working with files
+  @DependsOn(MyBackendRunner.class)
+  private static class MyFrontendRunner implements TestingService {
+    @Inject private MyFrontendServer myFrontendServer;
 
-* [File Uploads in Ember JS](http://ryantablada.com/post/file-uploads-in-ember-js)
-* [Direct Image Uploads with Cloudinary and Ember](https://emberflare.com/entries/direct-image-uploads-with-cloudinary-and-ember)
-* [Generating Files with JavaScript and Ember.js](http://spin.atomicobject.com/2014/02/05/generate-files-javascript-ember-js/)
-* [Client-side File Processing in Ember.js](http://spin.atomicobject.com/2014/01/15/client-side-file-processing-ember-js/)
+    @BeforeSuite public void startServer() {
+      myFrontendServer.start().awaitStarted();
+    }
+  }
 
-## Debugging
-> Useful resources for debugging Ember.js apps
+  private static class MyBackendRunner implements TestingService {
+    @Inject private MyBackendServer myBackendServer;
 
-* [Debugging with Ember Inspector – Ember’s Chrome Plugin](http://spin.atomicobject.com/2013/09/19/ember-inspector-chrome-plugin/)
+    @BeforeSuite public void startServer() {
+      myBackendServer.start().awaitStarted();
+    }
+  }
+}
+```
 
+In the above example `MyFrontendRunner` is annotated
+`@DependsOn(MyBackendRunner.class)` which will cause Acai to start the
+backend server before starting the frontend.
 
-## Build Tools
-> Useful resources for generic build tools
+## API
+As shown in the above examples Acai has a very small API surface.
+Firstly, and most importantly, there is the `Acai` rule class itself
+which is used as a JUnit4 `@Rule` and is passed a module class to be used to
+configure the test.
 
-* [Getting started with Broccoli and Ember.js](http://ampersate.com/getting-started-with-broccoli-and-emberjs)
-* [Gulp Ember Order](https://github.com/s1985/gulp-ember-order) - Github
-* [Setting up the Grunt Watch Plugin](http://www.devcasts.io/p/setting-up-the-grunt-watch-plugin/) - Screencast
-* [Ember Rocks](https://github.com/mattma/ember-rocks) - an alternative build tool to Ember CLI
+The module class passed to the `Acai` constructor may optionally use
+`TestingServiceModule` to bind one or more `TestingService` implementations.
 
-## Ember CLI
-> Useful resources for Ember CLI
+The `TestingService` interface is purely a marker to allow Acai to know
+which classes provide testing services. To actually do anything implementations
+of this interface should add zero argument methods annotated with one of
+`@BeforeSuite`, `@BeforeTest` or `@AfterTest`. These methods will be run before
+the suite, before each test or after each test respectively. You may add as
+many methods annotated with these annotations as you wish to a
+`TestingService`; Acai will find and run them all when appropriate.
 
-* [Ember CLI Official Documentation](http://www.ember-cli.com)
-* [Ember CLI Anatomy](https://emberflare.com/entries/ember-cli-anatomy)
-* [Getting Started With Ember.js Using EmberCLI](http://thetechcofounder.com/getting-started-with-ember-js-using-ember-cli/)
-* [Introducing Ember CLI Addons](http://reefpoints.dockyard.com/2014/06/24/introducing_ember_cli_addons.html)
-* [Ember CLI & Phonegap](http://givan.se/p/00000001)
+Finally a `TestingService` implementation can be annotated `@DependsOn` to
+signal its `@BeforeSuite` and `@BeforeTest` methods need to be run after
+those of another `TestingService`. This provides a simple declarative mechanism
+to order service startup in tests.
 
-## Backend Integration
-> Useful resources for backend integration
-
-* [Building an Ember App with Rails Part 1](http://reefpoints.dockyard.com/2014/05/07/building-an-ember-app-with-rails-part-1.html)
-* [Building an Ember App with Rails Part 2](http://reefpoints.dockyard.com/2014/05/08/building-an-ember-app-with-rails-part-2.html)
-* [Building an Ember App with Rails Part 3](http://reefpoints.dockyard.com/2014/05/09/building-an-ember-app-with-rails-part-3.html)
-* [Building an Ember App with Rails Part 4](http://reefpoints.dockyard.com/2014/05/31/building-an-ember-app-with-rails-part-4.html)
-* [EmberFire (Firebase + Ember Data)](https://github.com/firebase/emberFire)
-* [Ember.js + Firebase = < 3](http://mjackson.roon.io/ember-js-firebase-3)
-
-## Deployment
-> Useful resources for deployment
-
-* [Lightning Fast Deployments With Rails (in the Wild)](http://blog.abuiles.com/blog/2014/07/08/lightning-fast-deployments-with-rails/)
-* [Ember Hosting with Aerobatic](Ember Hosting with Aerobatic)
-
-## SEO & Analytics
-> Useful resources for SEO
-
-* [Ember and SEO](https://emberflare.com/entries/ember-and-seo)
-* [Prerender - AngularJS SEO, BackboneJS SEO, or EmberJS SEO](http://prerender.io/)
-* [Google Analytics for Single-Page Web Apps with Ember](http://spin.atomicobject.com/2014/07/01/google-analytics-web-apps/)
-
-## Other Sites For Resources
-> More resources
-
-* [EmberFlare](https://emberflare.com/entries)
-* [Ember Zone](http://ember.zone/)
-* [Ember Tricks](http://www.ember-tricks.com/#/tricks)
-
-## Misc Ember Links
-> Other miscellaneous Ember.js links
-
-* [Built With Ember](http://builtwithember.io/)
-* [Building Chrome Extensions With EmberJS](https://www.youtube.com/watch?v=NtkpDL2yKGo) - Youtube
-
->  Please note: Some of the links may not be as relevant as when they were originally written. The Ember.js ecosystem is under active development and things a liable to change. If you feel something should be removed just let me know.
+Refer to the examples above to see the API in action.
 </pre></div></body></html>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script>

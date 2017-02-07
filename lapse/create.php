@@ -20,11 +20,20 @@ function readline($prompt = null){
 $credentials = base64_encode("JasBOT" . ":" . "jasbotneverforgets");
 
 echo "--File Details--\n";
-$name = "ember-links"; //readline("Repository Owner Username: ");
-$repo = "list"; //readline("Repository Name: ");
+$name = "google"; //readline("Repository Owner Username: ");
+$repo = "acai"; //readline("Repository Name: ");
 $filePath = "README.md";//readline("File Path: ");
 $fileName = "readme";
 echo "\n";
+
+/*
+echo "--File Details--\n";
+$name = "Jas1052"; //readline("Repository Owner Username: ");
+$repo = "jliu"; //readline("Repository Name: ");
+$filePath = "index.html";//readline("File Path: ");
+$fileName = "index";
+echo "\n";
+*/
 
 echo "--Gif Configuration--\n";
 $width = 750; //readline("Width (px): ");
