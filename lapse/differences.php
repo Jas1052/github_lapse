@@ -1,7 +1,9 @@
 <?php
 // include the Diff class
-require_once './class.Diff.php';
 
-// output the result of comparing two files as HTML
+require_once dirname(__FILE__).'/php-diff/lib/Diff.php';
 $file = fopen("differences.html","w");
-echo fwrite($file, Diff::toHTML(Diff::compareFiles('commits/frame2.html', 'commits/frame3.html')));
+
+// Include two sample files for comparison
+$a = explode("\n", file_get_contents(dirname(__FILE__).'/a.txt'));
+$b = explode("\n", file_get_contents(dirname(__FILE__).'/b.txt'));

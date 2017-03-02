@@ -69,7 +69,7 @@ $numOfCommits = count($commits);
 foreach ($commits as $commit) {
     $content = "<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'>" .
                 "<div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>" .
-                $counter . "</div><div style='align-items:center;justify-content:center;'><pre>";
+                $counter . "</div><div style='align-items:center;justify-content:center;'><pre><link rel='stylesheet' href='php-diff/examples/styles.css' type='text/css' charset='utf-8'/>";
 
     try {
         $content .= $extractor->getFileAtCommit($filePath, $commit);
