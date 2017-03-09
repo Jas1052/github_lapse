@@ -63,7 +63,7 @@ $frames = array();
 $durations = array();
 $counter = 1;
 $numOfCommits = count($commits);
-
+$lastCommit = "";
 
 
 foreach ($commits as $commit) {
@@ -72,11 +72,13 @@ foreach ($commits as $commit) {
                 $counter . "</div><div style='align-items:center;justify-content:center;'><pre><link rel='stylesheet' href='php-diff/examples/styles.css' type='text/css' charset='utf-8'/>";
 
     try {
+        //Starts process of differences
+
         $content .= $extractor->getFileAtCommit($filePath, $commit);
     } catch (Exception $e) { }
 
     $content .= 
-    "</pre></div></body></html>\n<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>\n" . 
+    "</pre></div></body></html><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>" . 
     "<script>
     document.onkeydown = checkKey;
     function checkKey(e) {
