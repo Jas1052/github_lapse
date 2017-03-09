@@ -7,6 +7,8 @@ use FileCommitAnimator\ScreenshotCreator;
 use GifCreator\AnimGif;
 
 require 'vendor/autoload.php';
+require_once dirname(__FILE__).'/../php-diff/lib/Diff.php';
+
 
 function readline($prompt = null){
     if($prompt){
@@ -73,8 +75,19 @@ foreach ($commits as $commit) {
 
     try {
         //Starts process of differences
-
-        $content .= $extractor->getFileAtCommit($filePath, $commit);
+        $newCommit = $extractor->getFileAtCommit($filePath, $commit);
+        $a = explode("\n", $lastCommit);
+        $b = explode("\n", $newCommit);
+        $options = array(
+          //'ignoreWhitespace' => true,
+          //'ignoreCase' => true,
+        );
+        // Initialize the diff class
+        $diff = new Diff($a, $b, $options);
+        require_once dirname(__FILE__).'/../php-diff/lib/Diff/Renderer/Html/Inline.php';
+        $renderer = new Diff_Renderer_Html_Inline;
+        $content .= $diff->render($renderer);
+        $lastCommit = $newCommit; 
     } catch (Exception $e) { }
 
     $content .= 
