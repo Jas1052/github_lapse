@@ -93,7 +93,7 @@
 <div class="section scrollspy" id="generate">
     <div class="container">
         <h2 class="header text_b">Generate</h2>
-        <form class="col s12" action="../lapse/create.php" method="POST">
+        <form class="col s12" action="../lapse/create.php" method="post">
                 <div class="row">
                     <div class="input-field col s6">
                         <input id="first_name" type="text" class="validate">
@@ -106,20 +106,26 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="github_user" type="text" class="validate">
+                        <input name="github_user" id="github_user" type="text" class="validate">
                         <label for="github_user">Github Username</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate">
-                        <label for="email">Github Repository</label>
+                        <input name="repo" id="repo" type="text" class="validate">
+                        <label for="repo">Github Repository</label>
                     </div>
                 </div>
                  <div class="row">
                     <div class="input-field col s12">
-                      <input id="email" type="email" class="validate">
-                      <label for="email">File Path</label>
+                      <input name="path" id="path" type="text" class="validate">
+                      <label for="path">File Path</label>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="input-field col s12">
+                      <input name="filename" id="filename" type="text" class="validate">
+                      <label for="filename">File Name</label>
                     </div>
                 </div>
                 <div class="col offset-s10 s2">

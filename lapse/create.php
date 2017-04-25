@@ -21,12 +21,20 @@ function readline($prompt = null){
 
 $credentials = base64_encode("JasBOT" . ":" . "jasbotneverforgets");
 
+/*
 echo "--File Details--\n";
 $name = "google"; //readline("Repository Owner Username: ");
 $repo = "acai"; //readline("Repository Name: ");
 $filePath = "README.md";//readline("File Path: ");
 $fileName = "readme";
 echo "\n";
+*/
+
+$name = $_POST['github_user']; //readline("Repository Owner Username: ");
+$repo = $_POST['repo']; //readline("Repository Name: ");
+$filePath = $_POST['path'];//readline("File Path: ");
+$fileName = $_POST['filename'];
+
 
 /*
 echo "--File Details--\n";
@@ -54,7 +62,7 @@ try {
     exit("\nError: " .  $e->getMessage() . " \n");
 }
 echo "done. \n";
-
+  
 if (!file_exists('commits\\')) {
     mkdir('commits');
 } else {
@@ -74,7 +82,8 @@ foreach ($commits as $commit) {
                 $counter . "</div><div style='align-items:center;justify-content:center;'><pre><link rel='stylesheet' href='php-diff/examples/styles.css' type='text/css' charset='utf-8'/>";
 
     try {
-        //Starts process of differences
+        //Starts process of differences - Broken
+        /*
         $newCommit = $extractor->getFileAtCommit($filePath, $commit);
         $a = explode("\n", $lastCommit);
         $b = explode("\n", $newCommit);
@@ -87,7 +96,10 @@ foreach ($commits as $commit) {
         require_once dirname(__FILE__).'/../php-diff/lib/Diff/Renderer/Html/Inline.php';
         $renderer = new Diff_Renderer_Html_Inline;
         $content .= $diff->render($renderer);
-        $lastCommit = $newCommit; 
+        */
+//        $lastCommit = $newCommit; 
+        $content .= $extractor->getFileAtCommit($filePath, $commit);
+
     } catch (Exception $e) { }
 
     $content .= 

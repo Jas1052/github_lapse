@@ -1,4 +1,197 @@
-<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>1</div><div style='align-items:center;justify-content:center;'><pre><link rel='stylesheet' href='php-diff/examples/styles.css' type='text/css' charset='utf-8'/><table class="Differences DifferencesInline"><thead><tr><th>Old</th><th>New</th><th>Differences</th></tr></thead><tbody class="ChangeInsert"><tr><th>&nbsp;</th><th>1</th><td class="Right"><ins># Acai</ins>&nbsp;</td></tr></tbody><tbody class="ChangeEqual"><tr><th>1</th><th>2</th><td class="Left"></td></tr></tbody><tbody class="ChangeInsert"><tr><th>&nbsp;</th><th>3</th><td class="Right"><ins>Disclaimer: This is not an official Google product.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>4</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>5</th><td class="Right"><ins>Acai makes it easy to write functional tests of your application</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>6</th><td class="Right"><ins>with JUnit4 and Guice.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>7</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>8</th><td class="Right"><ins>Acai makes it simple to:</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>9</th><td class="Right"><ins>- Inject the helper classes you need into tests</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>10</th><td class="Right"><ins>- Start any services needed by your tests</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>11</th><td class="Right"><ins>- Run between-test cleanup of these services</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>12</th><td class="Right"><ins>- Start up multiple services for testing in the right order</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>13</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>14</th><td class="Right"><ins>Acai is designed for large functional tests of your application. For</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>15</th><td class="Right"><ins>example it can help with writing tests which start your backend and frontend</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>16</th><td class="Right"><ins>server in a self-contained mode with their dependencies faked out and then</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>17</th><td class="Right"><ins>validates some key user scenarios with Webdriver to give you confidence your</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>18</th><td class="Right"><ins>complete system works correctly. It can also be useful for tests which validate</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>19</th><td class="Right"><ins>the integration of a small set of components. Note however that for smaller</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>20</th><td class="Right"><ins>unit-tests we generally recommend you create the class under test manually</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>21</th><td class="Right"><ins>rather than using Acai.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>22</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>23</th><td class="Right"><ins>## Using Acai to inject a test</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>24</th><td class="Right"><ins>The simplest test using Acai doesn't register any TestingService bindings</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>25</th><td class="Right"><ins>at all, it just uses Acai to inject a test with a module:</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>26</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>27</th><td class="Right"><ins>```Java</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>28</th><td class="Right"><ins>@RunWith(JUnit4.class)</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>29</th><td class="Right"><ins>public class SimpleTest {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>30</th><td class="Right"><ins>&nbsp;@Rule public Acai acai = new Acai(MyTestModule.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>31</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>32</th><td class="Right"><ins>&nbsp;@Inject private MyClass foo;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>33</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>34</th><td class="Right"><ins>&nbsp;@Test</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>35</th><td class="Right"><ins>&nbsp;public void checkSomethingWorks() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>36</th><td class="Right"><ins>&nbsp; &nbsp;// Use the injected value of foo here</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>37</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>38</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>39</th><td class="Right"><ins>&nbsp;private static class MyTestModule extends AbstractModule {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>40</th><td class="Right"><ins>&nbsp; &nbsp;@Override protected void configure() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>41</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;bind(MyClass.class).to(MyClassImpl.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>42</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>43</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>44</th><td class="Right"><ins>}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>45</th><td class="Right"><ins>```</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>46</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>47</th><td class="Right"><ins>## Using Acai to start services</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>48</th><td class="Right"><ins>The real power of Acai comes when your production server is configured</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>49</th><td class="Right"><ins>with Guice and you create an alternate test module which configures your server</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>50</th><td class="Right"><ins>with heavyweight dependencies like databases replaced with local in-memory</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>51</th><td class="Right"><ins>implementations. You could then start this server once for all tests in the</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>52</th><td class="Right"><ins>suite (to avoid waiting for it to start between each test) and wipe the</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>53</th><td class="Right"><ins>database between tests (to cheaply isolate test-cases from one-another).</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>54</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>55</th><td class="Right"><ins>The following example shows how this pattern would be used in tests:</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>56</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>57</th><td class="Right"><ins>```Java</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>58</th><td class="Right"><ins>@RunWith(JUnit4.class)</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>59</th><td class="Right"><ins>public class ExampleFunctionalTest {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>60</th><td class="Right"><ins>&nbsp;@Rule public Acai acai = new Acai(MyTestModule.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>61</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>62</th><td class="Right"><ins>&nbsp;@Inject private MyServerClient serverClient;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>63</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>64</th><td class="Right"><ins>&nbsp;@Test</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>65</th><td class="Right"><ins>&nbsp;public void checkSomethingWorks() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>66</th><td class="Right"><ins>&nbsp; &nbsp;// Call the running server and test some behaviour here.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>67</th><td class="Right"><ins>&nbsp; &nbsp;// Any state will be cleared by MyFakeDatabaseWiper after each</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>68</th><td class="Right"><ins>&nbsp; &nbsp;// test case.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>69</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>70</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>71</th><td class="Right"><ins>&nbsp;private static class MyTestModule extends AbstractModule {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>72</th><td class="Right"><ins>&nbsp; &nbsp;@Override protected void configure() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>73</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;// Normal Guice modules which configure your</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>74</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;// server with in-memory versions of backends.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>75</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(MyServerModule());</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>76</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(MyFakeDatabaseModule());</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>77</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>78</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(new TestingServiceModule() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>79</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp;@Override protected void configureTestingServices() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>80</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;bindTestingService(MyServerRunner.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>81</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;bindTestingService(MyFakeDatabaseWiper.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>82</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>83</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;});</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>84</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>85</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>86</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>87</th><td class="Right"><ins>&nbsp;private static class MyServerRunner implements TestingService {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>88</th><td class="Right"><ins>&nbsp; &nbsp;@Inject private MyServer myServer;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>89</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>90</th><td class="Right"><ins>&nbsp; &nbsp;@BeforeSuite public void startServer() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>91</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;myServer.start().awaitStarted();</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>92</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>93</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>94</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>95</th><td class="Right"><ins>&nbsp;private static class MyFakeDatabaseWiper implements TestingService {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>96</th><td class="Right"><ins>&nbsp; &nbsp;@Inject private MyFakeDatabse myFakeDatabase;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>97</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>98</th><td class="Right"><ins>&nbsp; &nbsp;@AfterTest public void wipeDatabase() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>99</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;myFakeDatabase.wipe();</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>100</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>101</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>102</th><td class="Right"><ins>}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>103</th><td class="Right"><ins>```</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>104</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>105</th><td class="Right"><ins>Note that when a module is passed to Acai in a rule any @BeforeSuite</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>106</th><td class="Right"><ins>methods are only executed once per suite even if the same module is used in</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>107</th><td class="Right"><ins>multiple Acai rules in multiple different test classes within that suite.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>108</th><td class="Right"><ins>This allows tests of the server to be structured into test classes according to</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>109</th><td class="Right"><ins>the functionality being tested.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>110</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>111</th><td class="Right"><ins>## Services which depend upon each other</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>112</th><td class="Right"><ins>If the services you need to start for tests must be started in a specific order</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>113</th><td class="Right"><ins>you can express this using the `@DependsOn` annotation.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>114</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>115</th><td class="Right"><ins>For example:</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>116</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>117</th><td class="Right"><ins>```Java</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>118</th><td class="Right"><ins>@RunWith(JUnit4.class)</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>119</th><td class="Right"><ins>public class ExampleFrontendWebdriverTest {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>120</th><td class="Right"><ins>&nbsp;@Rule public Acai acai = new Acai(MyTestModule.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>121</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>122</th><td class="Right"><ins>&nbsp;@Inject private SomeFrontendFeaturePageObject featurePage;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>123</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>124</th><td class="Right"><ins>&nbsp;@Test</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>125</th><td class="Right"><ins>&nbsp;public void checkSomethingWorks() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>126</th><td class="Right"><ins>&nbsp; &nbsp;// Test the frontend client using the webdriver page</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>127</th><td class="Right"><ins>&nbsp; &nbsp;// object here.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>128</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>129</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>130</th><td class="Right"><ins>&nbsp;private static class MyTestModule extends AbstractModule {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>131</th><td class="Right"><ins>&nbsp; &nbsp;@Override protected void configure() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>132</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;// Normal Guice modules which configure your</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>133</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;// server with in-memory versions of servers and</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>134</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;// a test module configuring a webdriver client.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>135</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(MyServerModule());</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>136</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(MyFakeDatabaseModule());</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>137</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(WebDriverModule());</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>138</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>139</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;install(new TestingServiceModule() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>140</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp;@Override protected void configureTestingServices() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>141</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;bindTestingService(MyServerRunner.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>142</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;bindTestingService(MyBackendRunner.class);</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>143</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>144</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;});</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>145</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>146</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>147</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>148</th><td class="Right"><ins>&nbsp;@DependsOn(MyBackendRunner.class)</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>149</th><td class="Right"><ins>&nbsp;private static class MyFrontendRunner implements TestingService {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>150</th><td class="Right"><ins>&nbsp; &nbsp;@Inject private MyFrontendServer myFrontendServer;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>151</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>152</th><td class="Right"><ins>&nbsp; &nbsp;@BeforeSuite public void startServer() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>153</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;myFrontendServer.start().awaitStarted();</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>154</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>155</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>156</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>157</th><td class="Right"><ins>&nbsp;private static class MyBackendRunner implements TestingService {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>158</th><td class="Right"><ins>&nbsp; &nbsp;@Inject private MyBackendServer myBackendServer;</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>159</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>160</th><td class="Right"><ins>&nbsp; &nbsp;@BeforeSuite public void startServer() {</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>161</th><td class="Right"><ins>&nbsp; &nbsp; &nbsp;myBackendServer.start().awaitStarted();</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>162</th><td class="Right"><ins>&nbsp; &nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>163</th><td class="Right"><ins>&nbsp;}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>164</th><td class="Right"><ins>}</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>165</th><td class="Right"><ins>```</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>166</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>167</th><td class="Right"><ins>In the above example `MyFrontendRunner` is annotated</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>168</th><td class="Right"><ins>`@DependsOn(MyBackendRunner.class)` which will cause Acai to start the</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>169</th><td class="Right"><ins>backend server before starting the frontend.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>170</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>171</th><td class="Right"><ins>## API</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>172</th><td class="Right"><ins>As shown in the above examples Acai has a very small API surface.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>173</th><td class="Right"><ins>Firstly, and most importantly, there is the `Acai` rule class itself</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>174</th><td class="Right"><ins>which is used as a JUnit4 `@Rule` and is passed a module class to be used to</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>175</th><td class="Right"><ins>configure the test.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>176</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>177</th><td class="Right"><ins>The module class passed to the `Acai` constructor may optionally use</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>178</th><td class="Right"><ins>`TestingServiceModule` to bind one or more `TestingService` implementations.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>179</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>180</th><td class="Right"><ins>The `TestingService` interface is purely a marker to allow Acai to know</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>181</th><td class="Right"><ins>which classes provide testing services. To actually do anything implementations</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>182</th><td class="Right"><ins>of this interface should add zero argument methods annotated with one of</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>183</th><td class="Right"><ins>`@BeforeSuite`, `@BeforeTest` or `@AfterTest`. These methods will be run before</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>184</th><td class="Right"><ins>the suite, before each test or after each test respectively. You may add as</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>185</th><td class="Right"><ins>many methods annotated with these annotations as you wish to a</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>186</th><td class="Right"><ins>`TestingService`; Acai will find and run them all when appropriate.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>187</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>188</th><td class="Right"><ins>Finally a `TestingService` implementation can be annotated `@DependsOn` to</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>189</th><td class="Right"><ins>signal its `@BeforeSuite` and `@BeforeTest` methods need to be run after</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>190</th><td class="Right"><ins>those of another `TestingService`. This provides a simple declarative mechanism</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>191</th><td class="Right"><ins>to order service startup in tests.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>192</th><td class="Right"><ins></ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>193</th><td class="Right"><ins>Refer to the examples above to see the API in action.</ins>&nbsp;</td></tr><tr><th>&nbsp;</th><th>194</th><td class="Right"><ins></ins>&nbsp;</td></tr></tbody></table></pre></div></body></html><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script>
+<!DOCTYPE html><html><head><link rel='shortcut icon' href='../../www/img/favicon.ico' type='image/x-icon'/></head><body style='width:100%;height:100%;background-color:white;'><div style='font-family:Segoe UI;color:blue;font-size:50px;position:absolute;top:0;left:15px;'>1</div><div style='align-items:center;justify-content:center;'><pre><link rel='stylesheet' href='php-diff/examples/styles.css' type='text/css' charset='utf-8'/># Acai
+
+Disclaimer: This is not an official Google product.
+
+Acai makes it easy to write functional tests of your application
+with JUnit4 and Guice.
+
+Acai makes it simple to:
+ - Inject the helper classes you need into tests
+ - Start any services needed by your tests
+ - Run between-test cleanup of these services
+ - Start up multiple services for testing in the right order
+
+Acai is designed for large functional tests of your application. For
+example it can help with writing tests which start your backend and frontend
+server in a self-contained mode with their dependencies faked out and then
+validates some key user scenarios with Webdriver to give you confidence your
+complete system works correctly. It can also be useful for tests which validate
+the integration of a small set of components. Note however that for smaller
+unit-tests we generally recommend you create the class under test manually
+rather than using Acai.
+
+## Using Acai to inject a test
+The simplest test using Acai doesn't register any TestingService bindings
+at all, it just uses Acai to inject a test with a module:
+
+```Java
+@RunWith(JUnit4.class)
+public class SimpleTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
+
+  @Inject private MyClass foo;
+
+  @Test
+  public void checkSomethingWorks() {
+    // Use the injected value of foo here
+  }
+
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      bind(MyClass.class).to(MyClassImpl.class);
+    }
+  }
+}
+```
+
+## Using Acai to start services
+The real power of Acai comes when your production server is configured
+with Guice and you create an alternate test module which configures your server
+with heavyweight dependencies like databases replaced with local in-memory
+implementations. You could then start this server once for all tests in the
+suite (to avoid waiting for it to start between each test) and wipe the
+database between tests (to cheaply isolate test-cases from one-another).
+
+The following example shows how this pattern would be used in tests:
+
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFunctionalTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
+
+  @Inject private MyServerClient serverClient;
+
+  @Test
+  public void checkSomethingWorks() {
+    // Call the running server and test some behaviour here.
+    // Any state will be cleared by MyFakeDatabaseWiper after each
+    // test case.
+  }
+
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of backends.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
+
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyFakeDatabaseWiper.class);
+        }
+      });
+    }
+  }
+
+  private static class MyServerRunner implements TestingService {
+    @Inject private MyServer myServer;
+
+    @BeforeSuite public void startServer() {
+      myServer.start().awaitStarted();
+    }
+  }
+
+  private static class MyFakeDatabaseWiper implements TestingService {
+    @Inject private MyFakeDatabse myFakeDatabase;
+
+    @AfterTest public void wipeDatabase() {
+      myFakeDatabase.wipe();
+    }
+  }
+}
+```
+
+Note that when a module is passed to Acai in a rule any @BeforeSuite
+methods are only executed once per suite even if the same module is used in
+multiple Acai rules in multiple different test classes within that suite.
+This allows tests of the server to be structured into test classes according to
+the functionality being tested.
+
+## Services which depend upon each other
+If the services you need to start for tests must be started in a specific order
+you can express this using the `@DependsOn` annotation.
+
+For example:
+
+```Java
+@RunWith(JUnit4.class)
+public class ExampleFrontendWebdriverTest {
+  @Rule public Acai acai = new Acai(MyTestModule.class);
+
+  @Inject private SomeFrontendFeaturePageObject featurePage;
+
+  @Test
+  public void checkSomethingWorks() {
+    // Test the frontend client using the webdriver page
+    // object here.
+  }
+
+  private static class MyTestModule extends AbstractModule {
+    @Override protected void configure() {
+      // Normal Guice modules which configure your
+      // server with in-memory versions of servers and
+      // a test module configuring a webdriver client.
+      install(MyServerModule());
+      install(MyFakeDatabaseModule());
+      install(WebDriverModule());
+
+      install(new TestingServiceModule() {
+        @Override protected void configureTestingServices() {
+          bindTestingService(MyServerRunner.class);
+          bindTestingService(MyBackendRunner.class);
+        }
+      });
+    }
+  }
+
+  @DependsOn(MyBackendRunner.class)
+  private static class MyFrontendRunner implements TestingService {
+    @Inject private MyFrontendServer myFrontendServer;
+
+    @BeforeSuite public void startServer() {
+      myFrontendServer.start().awaitStarted();
+    }
+  }
+
+  private static class MyBackendRunner implements TestingService {
+    @Inject private MyBackendServer myBackendServer;
+
+    @BeforeSuite public void startServer() {
+      myBackendServer.start().awaitStarted();
+    }
+  }
+}
+```
+
+In the above example `MyFrontendRunner` is annotated
+`@DependsOn(MyBackendRunner.class)` which will cause Acai to start the
+backend server before starting the frontend.
+
+## API
+As shown in the above examples Acai has a very small API surface.
+Firstly, and most importantly, there is the `Acai` rule class itself
+which is used as a JUnit4 `@Rule` and is passed a module class to be used to
+configure the test.
+
+The module class passed to the `Acai` constructor may optionally use
+`TestingServiceModule` to bind one or more `TestingService` implementations.
+
+The `TestingService` interface is purely a marker to allow Acai to know
+which classes provide testing services. To actually do anything implementations
+of this interface should add zero argument methods annotated with one of
+`@BeforeSuite`, `@BeforeTest` or `@AfterTest`. These methods will be run before
+the suite, before each test or after each test respectively. You may add as
+many methods annotated with these annotations as you wish to a
+`TestingService`; Acai will find and run them all when appropriate.
+
+Finally a `TestingService` implementation can be annotated `@DependsOn` to
+signal its `@BeforeSuite` and `@BeforeTest` methods need to be run after
+those of another `TestingService`. This provides a simple declarative mechanism
+to order service startup in tests.
+
+Refer to the examples above to see the API in action.
+</pre></div></body></html><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script>
     document.onkeydown = checkKey;
     function checkKey(e) {
         e = e || window.event;
